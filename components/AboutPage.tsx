@@ -1,0 +1,34 @@
+import React from 'react';
+
+const AboutPage: React.FC = () => {
+  return (
+    <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-lg overflow-hidden p-6 md:p-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 border-b pb-4 dark:border-gray-700">
+          Sobre o Projeto
+        </h1>
+        <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+            <p><strong>Criado por:</strong> Morgana Petterle da cunha</p>
+            <p><strong>Idade:</strong> 34 anos</p>
+            <p><strong>Localização:</strong> Curitiba, Paraná</p>
+          </div>
+          <div className="pt-4 mt-4 border-t dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">Contexto Acadêmico</h2>
+            <p>
+              Este aplicativo foi criado como forma de trabalho prático para a disciplina:
+            </p>
+            <p className="font-semibold block mt-2 text-center p-3 bg-gray-100 dark:bg-gray-900 rounded-md">
+              DGT2812 - Desenvolvimento de Aplicativos Móveis com Flutter
+            </p>
+            <p className="mt-4">
+              <strong>Tutor(a):</strong> Simone Gama
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default AboutPage;
