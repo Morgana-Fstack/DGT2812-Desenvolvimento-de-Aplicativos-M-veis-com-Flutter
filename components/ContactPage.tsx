@@ -1,11 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EmailIcon, PhoneIcon, ClockIcon } from './Icons';
 
+type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error';
+
 const ContactPage: React.FC = () => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert('Obrigado! Sua solicitação de orçamento foi enviada.');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    startDate: '',
+    endDate: '',
+    plan: '',
+  });
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmissionStatus('submitting');
+    setErrorMessage(null);
+
+    const endpoint = 'https://formspree.io/f/mkgpdkqo';
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Ocorreu um erro no servidor.' }));
+        throw new Error(errorData.message || 'Falha ao enviar a solicitação.');
+      }
+
+      setSubmissionStatus('success');
+      // Reseta o formulário após o sucesso
+      setFormData({ name: '', email: '', phone: '', startDate: '', endDate: '', plan: '' }); 
+
+      // Retorna ao estado 'idle' após alguns segundos para permitir novo envio
+      setTimeout(() => setSubmissionStatus('idle'), 5000);
+      
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmissionStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Um erro inesperado ocorreu. Por favor, tente novamente.');
+       // Retorna ao estado 'idle' após alguns segundos
+       setTimeout(() => setSubmissionStatus('idle'), 5000);
+    }
+  };
+  
+  const getButtonText = () => {
+    switch (submissionStatus) {
+      case 'submitting':
+        return 'Enviando...';
+      case 'success':
+        return 'Enviado com Sucesso!';
+      default:
+        return 'Enviar Solicitação';
+    }
+  };
+
 
   return (
     <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -21,6 +84,8 @@ const ContactPage: React.FC = () => {
               id="name" 
               name="name" 
               required 
+              value={formData.name}
+              onChange={handleInputChange}
               className="w-full p-3 bg-stone-100 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
             />
           </div>
@@ -31,6 +96,8 @@ const ContactPage: React.FC = () => {
               id="email" 
               name="email" 
               required
+              value={formData.email}
+              onChange={handleInputChange}
               className="w-full p-3 bg-stone-100 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
             />
           </div>
@@ -41,6 +108,8 @@ const ContactPage: React.FC = () => {
               id="phone" 
               name="phone"
               required
+              value={formData.phone}
+              onChange={handleInputChange}
               className="w-full p-3 bg-stone-100 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
             />
           </div>
@@ -52,6 +121,8 @@ const ContactPage: React.FC = () => {
                   id="startDate" 
                   name="startDate"
                   required
+                  value={formData.startDate}
+                  onChange={handleInputChange}
                   className="w-full p-3 bg-stone-100 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
                 />
             </div>
@@ -62,6 +133,8 @@ const ContactPage: React.FC = () => {
                   id="endDate" 
                   name="endDate"
                   required
+                  value={formData.endDate}
+                  onChange={handleInputChange}
                   className="w-full p-3 bg-stone-100 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
                 />
             </div>
@@ -72,6 +145,8 @@ const ContactPage: React.FC = () => {
               id="plan"
               name="plan"
               rows={5}
+              value={formData.plan}
+              onChange={handleInputChange}
               className="w-full p-3 bg-stone-100 rounded-md border border-stone-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
               placeholder="Ex: número de pessoas, tipo de acomodação, passeios de interesse, etc."
             ></textarea>
@@ -79,16 +154,29 @@ const ContactPage: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-stone-100 focus:ring-orange-500 transition"
+              disabled={submissionStatus === 'submitting'}
+              className="w-full px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-stone-100 focus:ring-orange-500 transition disabled:bg-orange-400 disabled:cursor-not-allowed"
             >
-              Enviar Solicitação
+              {getButtonText()}
             </button>
           </div>
         </form>
-        <div className="text-center mt-4">
-            <p className="text-sm text-stone-500">
-                Resposta ao orçamento em até 3 dias úteis.
-            </p>
+        <div className="text-center mt-4 h-6">
+            {submissionStatus === 'success' && (
+                <p className="text-sm text-green-600">
+                Obrigado! Sua solicitação de orçamento foi enviada com sucesso.
+                </p>
+            )}
+            {submissionStatus === 'error' && (
+                <p className="text-sm text-red-600">
+                {errorMessage || 'Ocorreu um erro. Por favor, tente novamente.'}
+                </p>
+            )}
+            {submissionStatus === 'idle' && (
+                <p className="text-sm text-stone-500">
+                    Resposta ao orçamento em até 3 dias úteis.
+                </p>
+            )}
         </div>
         <div className="mt-8 pt-8 border-t border-stone-200">
             <h2 className="text-xl font-bold text-stone-800 mb-4 text-center">
