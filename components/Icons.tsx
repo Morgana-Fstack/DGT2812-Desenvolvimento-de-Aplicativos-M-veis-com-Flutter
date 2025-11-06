@@ -65,7 +65,7 @@ export const ShareIcon: React.FC = () => (
 export const CompassIcon: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-8 w-8 text-blue-500"
+    className="h-8 w-8 text-orange-500"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -82,7 +82,7 @@ export const CompassIcon: React.FC = () => (
 export const SearchIcon: React.FC = () => (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="h-5 w-5 text-gray-400 dark:text-gray-500" 
+        className="h-5 w-5 text-stone-400" 
         fill="none" 
         viewBox="0 0 24 24" 
         stroke="currentColor" 
@@ -95,7 +95,7 @@ export const SearchIcon: React.FC = () => (
 export const UserIcon: React.FC = () => (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="h-10 w-10 p-1 bg-gray-200 dark:bg-gray-600 text-gray-400 dark:text-gray-500 rounded-full" 
+        className="h-10 w-10 p-1 bg-stone-200 text-stone-400 rounded-full" 
         viewBox="0 0 20 20" 
         fill="currentColor"
     >

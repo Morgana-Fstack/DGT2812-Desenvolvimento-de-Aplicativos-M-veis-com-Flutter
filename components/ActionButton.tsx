@@ -8,7 +8,7 @@ interface ActionButtonProps {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ icon, label }) => {
   return (
-    <button className="flex flex-col items-center justify-center space-y-2 text-blue-500 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/50 p-3 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button className="flex flex-col items-center justify-center space-y-2 text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500">
       {icon}
       <span className="text-xs font-semibold uppercase tracking-wider">
         {label}

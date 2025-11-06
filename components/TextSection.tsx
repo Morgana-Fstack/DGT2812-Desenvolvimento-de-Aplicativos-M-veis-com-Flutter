@@ -7,7 +7,7 @@ interface TextSectionProps {
 const TextSection: React.FC<TextSectionProps> = ({ description }) => {
   return (
     <div>
-      <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-justify">
+      <p className="text-stone-600 leading-relaxed text-justify">
         {description}
       </p>
     </div>
