@@ -7,9 +7,11 @@ import TextSection from './components/TextSection';
 import ReviewSection from './components/ReviewSection';
 import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
+import ContactPage from './components/ContactPage';
 import { destinationsData } from './data';
+import TravelIntroPage from './components/TravelIntroPage';
 
-type View = 'landing' | 'destinations' | 'about';
+type View = 'landing' | 'travelIntro' | 'destinations' | 'about' | 'contact';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('landing');
@@ -21,14 +23,20 @@ const App: React.FC = () => {
   };
 
   if (currentView === 'landing') {
-    return <LandingPage onNavigate={() => setCurrentView('destinations')} />;
+    return <LandingPage onNavigate={() => setCurrentView('travelIntro')} />;
   }
   
   const currentDestination = destinationsData.find(d => d.id === selectedDestinationId) || destinationsData[0];
 
   const renderContent = () => {
+    if (currentView === 'travelIntro') {
+      return <TravelIntroPage onContinue={() => setCurrentView('destinations')} />;
+    }
     if (currentView === 'about') {
       return <AboutPage />;
+    }
+    if (currentView === 'contact') {
+      return <ContactPage />;
     }
     
     // Default to destinations view
@@ -38,7 +46,7 @@ const App: React.FC = () => {
           <DestinationImage imageUrl={currentDestination.image} altText={currentDestination.location} />
           <div className="p-6 md:p-8">
             <TitleSection title={currentDestination.name} location={currentDestination.location} />
-            <ButtonSection />
+            <ButtonSection onQuoteClick={() => setCurrentView('contact')} />
             <TextSection description={currentDestination.description} />
             <ReviewSection reviews={currentDestination.reviews} />
           </div>
@@ -54,6 +62,7 @@ const App: React.FC = () => {
         onSelectDestination={handleSelectDestination}
         onShowAbout={() => setCurrentView('about')}
         onShowHome={() => setCurrentView('landing')}
+        onShowContact={() => setCurrentView('contact')}
       />
       {renderContent()}
     </div>

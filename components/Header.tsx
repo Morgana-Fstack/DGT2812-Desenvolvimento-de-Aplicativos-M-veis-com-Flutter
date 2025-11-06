@@ -7,9 +7,10 @@ interface HeaderProps {
     onSelectDestination: (id: string) => void;
     onShowAbout: () => void;
     onShowHome: () => void;
+    onShowContact: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ destinations, onSelectDestination, onShowAbout, onShowHome }) => {
+const Header: React.FC<HeaderProps> = ({ destinations, onSelectDestination, onShowAbout, onShowHome, onShowContact }) => {
   const [isDestinationsMenuOpen, setIsDestinationsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -95,6 +96,7 @@ const Header: React.FC<HeaderProps> = ({ destinations, onSelectDestination, onSh
                 )}
               </div>
               <a href="#" onClick={(e) => { e.preventDefault(); onShowAbout(); }} className="text-stone-600 hover:bg-stone-200 px-3 py-2 rounded-md text-sm font-medium">Sobre Nós</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); onShowContact(); }} className="text-stone-600 hover:bg-stone-200 px-3 py-2 rounded-md text-sm font-medium">Contato</a>
             </nav>
             <div className="relative">
               <input
@@ -102,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ destinations, onSelectDestination, onSh
                 placeholder="Pesquisa Rápida..."
                 className="bg-stone-100 placeholder-stone-500 text-stone-900 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-500 w-48 transition-all"
               />
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-400">
                 <SearchIcon />
               </div>
             </div>
@@ -149,13 +151,14 @@ const Header: React.FC<HeaderProps> = ({ destinations, onSelectDestination, onSh
               )}
             </div>
             <a href="#" onClick={(e) => { e.preventDefault(); handleMobileLinkClick(onShowAbout); }} className="block text-stone-600 hover:bg-stone-200 px-3 py-2 rounded-md text-base font-medium">Sobre Nós</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleMobileLinkClick(onShowContact); }} className="block text-stone-600 hover:bg-stone-200 px-3 py-2 rounded-md text-base font-medium">Contato</a>
             <div className="relative pt-2">
               <input
                 type="search"
                 placeholder="Pesquisa Rápida..."
                 className="w-full bg-stone-100 placeholder-stone-500 text-stone-900 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
-              <div className="absolute inset-y-0 left-0 top-2 pl-3 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 top-2 pl-3 flex items-center pointer-events-none text-stone-400">
                 <SearchIcon />
               </div>
             </div>
